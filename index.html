@@ -89,7 +89,7 @@
         <header class="text-center mb-10">
             <h1 class="text-4xl md:text-5xl font-bold section-title mb-2">Japan Trip Itinerary Planner</h1>
             <p class="text-lg text-gray-600">An interactive tool to help our group decide on the best travel plan.</p>
-            <p class="text-sm text-gray-500 mt-1">October 30 – November 5</p>
+            <p class="text-sm text-gray-500 mt-1">Trip Window: Oct 30 – Nov 4 (Nov 5 is departure day)<br><span class="text-xs text-gray-400">(Note: A separate pre-trip stay in Tokyo is set for Oct 22)</span></p>
         </header>
 
         <section id="scenario-selector" class="mb-8">
@@ -105,12 +105,22 @@
                     Scenario B: "Greatest Hits" (Balanced)
                 </button>
             </div>
+             <div id="scenario-a-toggle" class="text-center mt-4 hidden">
+                <label for="day-trip-toggle" class="inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="day-trip-toggle" class="sr-only peer">
+                    <div class="relative w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                    <span class="ms-3 text-sm font-medium text-gray-900">Prefer a Day Trip to Onsen (Fewer Hotel Moves)?</span>
+                </label>
+            </div>
         </section>
 
         <main id="dashboard" class="space-y-8">
             <div class="card p-6">
                 <h3 class="text-2xl font-bold section-title mb-4 text-center" id="scenario-title"></h3>
                 <p class="text-center text-gray-700 max-w-3xl mx-auto" id="scenario-summary"></p>
+                <div class="text-center mt-3">
+                    <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700" id="scenario-moves-badge"></span>
+                </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -132,8 +142,8 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
                 <div class="lg:col-span-3 card p-6">
-                    <h3 class="text-xl font-bold mb-4">Illustrative Itinerary</h3>
-                    <p class="text-gray-600 text-sm mb-6">This is a sample schedule to give a feel for the daily flow. Activities are flexible, but the travel and hotel stays are fixed by the scenario.</p>
+                    <h3 class="text-xl font-bold mb-4">Example Itinerary (Flexible Activities)</h3>
+                    <p class="text-gray-600 text-sm mb-6">This is a sample schedule to give a feel for the daily flow. <b>Activities are flexible, but travel and hotel stays are fixed by the scenario.</b></p>
                     <div id="itinerary-content" class="space-y-6"></div>
                 </div>
                 <div class="lg:col-span-2 card p-6">
@@ -148,6 +158,7 @@
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold section-title">Deep Dive: Onsen & Fuji Viewing</h2>
                 <p class="text-gray-600 mt-2 max-w-3xl mx-auto">A key part of the plan is the mountain/onsen experience. This compares our two main options, Hakone and Kawaguchiko. This choice impacts both scenarios.</p>
+                <p class="text-xs text-gray-500 mt-3 max-w-2xl mx-auto bg-blue-50 border border-blue-200 rounded-md p-2"><b>A quick note on flexibility:</b> Fuji views are heavily weather-dependent. If skies are cloudy, we can pivot this day trip to another great spot for foliage and nature, like Kamakura, Nikko, or Mount Takao.</p>
             </div>
             <div class="card overflow-x-auto">
                 <table class="w-full text-left">
@@ -176,8 +187,18 @@
                         </tr>
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 font-medium">Logistics from Tokyo</td>
-                            <td class="p-4">Excellent (~1.5-2 hrs). Multiple direct train options.</td>
-                            <td class="p-4">Good (~1.75-2 hrs). Direct bus is the best option.</td>
+                            <td class="p-4">
+                                <ul class="list-disc list-inside text-sm">
+                                    <li><b>Time:</b> ~1.5–2 hours door-to-door.</li>
+                                    <li><b>Transfers:</b> Simple. Direct train (Odakyu Romancecar) or Shinkansen + local train.</li>
+                                </ul>
+                            </td>
+                            <td class="p-4">
+                                <ul class="list-disc list-inside text-sm">
+                                    <li><b>Time:</b> ~1.75–2.25 hours door-to-door.</li>
+                                    <li><b>Transfers:</b> Simplest via direct highway bus. Train options are more complex.</li>
+                                </ul>
+                            </td>
                         </tr>
                         <tr class="hover:bg-gray-50">
                             <td class="p-4 font-medium">Fit for "Greatest Hits" Loop</td>
@@ -201,12 +222,19 @@
                 </div>
                 <div class="card p-6">
                     <h4 class="font-bold text-lg mb-2">2. Budget & Logistics</h4>
-                    <p>Are we comfortable with the ~$180+ per person cost for bullet trains and managing 3 hotel changes in 6 nights? Or is simplicity and cost-saving more important?</p>
+                    <p>Are we comfortable with the Shinkansen cost (est. $180-$230 pp for key legs) and managing 3 hotel moves? Or is simplicity more important? (Note: Scenario A requires no Shinkansen.)</p>
                 </div>
                 <div class="card p-6">
                     <h4 class="font-bold text-lg mb-2">3. Arrival Day Energy</h4>
                     <p>How do we want to spend our first day after arriving from China? A simple transfer to a Tokyo hotel, or a long travel leg immediately to another city?</p>
                 </div>
+            </div>
+        </section>
+
+        <section id="group-preferences" class="mt-12">
+            <div class="card p-6 bg-amber-50 border-amber-200">
+                <h4 class="font-bold text-lg mb-2 text-amber-800">A Note on Group Preferences (Beds & Baths)</h4>
+                <p class="text-amber-900">To ensure comfort, the plan is to book city hotels with Western-style beds. For the ryokan stay, we will prioritize rooms that have Western beds and a private onsen/bath. No capsule hotels or shared dormitory-style rooms are being considered.</p>
             </div>
         </section>
 
@@ -218,8 +246,8 @@
                 title: 'Scenario A: Tokyo+ (with Onsen Overnight)',
                 summary: 'This scenario balances a relaxed pace with a "magical" onsen experience. It uses Tokyo as a main base but includes a dedicated overnight stay in Hakone to fully enjoy the ryokan, food, and nature without being rushed.',
                 metrics: {
-                    hotelMoves: 3,
-                    hotelMovesText: "1 - 3 hotels",
+                    hotelMoves: 2,
+                    hotelMovesText: "2 moves (3 hotels total)",
                     transitHours: 5,
                 },
                 experienceScores: {
@@ -252,12 +280,50 @@
                     { day: "Nov 5", title: "Departure", details: "Easy morning and departure from HND.", icon: "✈️" },
                 ]
             },
+            tokyoPlusDayTrip: {
+                title: 'Scenario A-Sub: Tokyo+ (with Onsen Day Trip)',
+                summary: 'This option maximizes time in Tokyo by treating the onsen visit as a full-day excursion from our Tokyo base. It eliminates an extra hotel check-in/out, simplifying logistics at the cost of a less immersive onsen experience.',
+                metrics: {
+                    hotelMoves: 1,
+                    hotelMovesText: "1 move (2 hotels total)",
+                    transitHours: 7, // Higher due to round-trip in one day
+                },
+                experienceScores: {
+                    pace: 7,
+                    flexibility: 9,
+                    nature: 7,
+                    food: 7,
+                    iconicSights: 6,
+                    costControl: 9,
+                },
+                pros: [
+                    "Simplest logistics with only one main hotel in Tokyo.",
+                    "Maximizes flexibility on all other days.",
+                    "Lowest accommodation cost and hassle.",
+                    "Still get to experience an onsen, even if brief."
+                ],
+                cons: [
+                    "A day trip can feel rushed (long travel day).",
+                    "Misses the magical experience of a ryokan overnight stay and kaiseki dinner.",
+                    "Less time to explore Hakone's other sights.",
+                    "Two long transit days back-to-back (if done near arrival/departure)."
+                ],
+                itinerary: [
+                    { day: "Oct 30", title: "Arrival & Settle In", details: "Arrive HND, transfer to single Tokyo hotel for the whole trip.", icon: "🏨" },
+                    { day: "Oct 31", title: "West Tokyo Vibe", details: "Explore Shibuya & Harajuku. People-watching for Halloween.", icon: "🏙️" },
+                    { day: "Nov 1", title: "Hakone Day Trip", details: "Full day trip to Hakone for onsen and sights. Return to Tokyo in the evening.", icon: "🏞️" },
+                    { day: "Nov 2", title: "Art & Culture", details: "Visit teamLab Planets and explore traditional Asakusa.", icon: "🎨" },
+                    { day: "Nov 3", title: "Free Day / Kamakura", details: "Flexible day for shopping, or an optional light day trip to Kamakura.", icon: "⛩️" },
+                    { day: "Nov 4", title: "Explore East Tokyo", details: "Discover Ueno Park, museums, and Ameya Yokocho market.", icon: "🌳" },
+                    { day: "Nov 5", title: "Departure", details: "Easy morning and departure from HND.", icon: "✈️" },
+                ]
+            },
             greatestHits: {
                 title: 'Scenario B: "Greatest Hits" (Balanced)',
                 summary: 'This scenario offers a balanced taste of Japan\'s highlights, based on the classic 3 nights Tokyo, 2 nights Kyoto, 1 night Hakone split. It\'s an efficient loop that captures iconic sights and experiences with a more manageable pace.',
                 metrics: {
-                    hotelMoves: 4,
-                    hotelMovesText: "3 - 4 hotels, depending on Kyoto start",
+                    hotelMoves: 3,
+                    hotelMovesText: "3 moves (3-4 hotels total)",
                     transitHours: 7,
                 },
                 experienceScores: {
@@ -343,15 +409,23 @@
         };
 
         const updateUI = (scenario) => {
-            const scenarioData = data[scenario];
+            const dayTripToggle = document.getElementById('day-trip-toggle');
+            const isDayTrip = (scenario === 'tokyoPlus' && dayTripToggle.checked);
+            const scenarioKey = isDayTrip ? 'tokyoPlusDayTrip' : scenario;
+
+            const scenarioData = data[scenarioKey];
             currentScenarioData = scenarioData; // Update global state for chart tooltips
             const colors = colorPalettes[scenario];
+
+            // Show/hide toggle
+            document.getElementById('scenario-a-toggle').style.display = (scenario === 'tokyoPlus') ? 'block' : 'none';
 
             // Update CSS variable for theme color
             document.documentElement.style.setProperty('--theme-primary', colors.primary);
             
             document.getElementById('scenario-title').innerText = scenarioData.title;
             document.getElementById('scenario-summary').innerText = scenarioData.summary;
+            document.getElementById('scenario-moves-badge').innerText = `Moves after arrival: ${scenarioData.metrics.hotelMoves}`;
 
             document.getElementById('pros-cons-content').innerHTML = renderProsCons(scenarioData.pros, scenarioData.cons);
             document.getElementById('itinerary-content').innerHTML = renderItinerary(scenarioData.itinerary);
@@ -425,7 +499,7 @@
                                     }
                                     if (context.parsed.x !== null) {
                                          if (context.label === 'Hotel Moves') {
-                                            label += `${context.parsed.x} (${currentScenarioData.metrics.hotelMovesText})`;
+                                            label += `${context.parsed.x} moves (${currentScenarioData.metrics.hotelMovesText})`;
                                         } else if (context.label === 'Transit (Hours)') {
                                             label += `${context.parsed.x} hrs`;
                                         } else {
@@ -488,6 +562,7 @@
 
             document.getElementById('btn-tokyo').addEventListener('click', () => updateUI('tokyoPlus'));
             document.getElementById('btn-greatest-hits').addEventListener('click', () => updateUI('greatestHits'));
+            document.getElementById('day-trip-toggle').addEventListener('change', () => updateUI('tokyoPlus'));
         };
     </script>
 </body>
