@@ -25,7 +25,7 @@
             transition: all 0.3s ease;
         }
         .btn-tokyo-plus.active {
-            background-color: #A0522D !important; /* Sienna */
+            background-color: #2E8B57 !important; /* SeaGreen */
             color: #FFFFFF !important;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
@@ -34,7 +34,7 @@
             color: #FFFFFF !important;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         }
-        .text-tokyo-plus { color: #A0522D; }
+        .text-tokyo-plus { color: #2E8B57; }
         .text-greatest-hits { color: #B72C2C; }
         .chart-container {
             position: relative;
@@ -220,12 +220,12 @@
     <script>
         const scenarioColors = {
             tokyoPlus: {
-                solid: '#A0522D', // Sienna
-                light: 'rgba(160, 82, 45, 0.2)'
+                solid: '#2E8B57', // SeaGreen
+                light: 'rgba(46, 139, 87, 0.3)'
             },
             greatestHits: {
                 solid: '#B72C2C', // Red
-                light: 'rgba(183, 44, 44, 0.2)'
+                light: 'rgba(183, 44, 44, 0.3)'
             }
         };
 
@@ -234,8 +234,8 @@
                 title: 'Scenario A: Modified "Tokyo+"',
                 summary: 'This scenario prioritizes a relaxed pace, flexibility, and cost control by using Tokyo as a single home base. We explore the surrounding region through a series of optional day trips, minimizing travel time and hotel changes.',
                 metrics: {
-                    hotelMoves: 1,
-                    transitHours: 2,
+                    hotelMoves: [1, 3], // Range: 1 to 3
+                    transitHours: [0, 2],
                 },
                 experienceScores: {
                     pace: 9,
@@ -271,8 +271,8 @@
                 title: 'Scenario B: "Greatest Hits" Loop',
                 summary: 'This scenario prioritizes seeing the most iconic sights for first-timers, including both Tokyo and Kyoto, plus an onsen town. It accepts a faster pace, higher cost, and more logistical complexity as a trade-off for experiential breadth.',
                 metrics: {
-                    hotelMoves: 4,
-                    transitHours: 9,
+                    hotelMoves: [3, 4], // Range: 3 to 4
+                    transitHours: [0, 9],
                 },
                 experienceScores: {
                     pace: 4,
@@ -349,7 +349,7 @@
             // Update title
             const titleEl = document.getElementById('scenario-title');
             titleEl.innerText = scenarioData.title;
-            titleEl.classList.remove('text-tokyo-plus', 'text-greatest-hits', 'section-title');
+            titleEl.className = 'text-2xl font-bold mb-4 text-center'; // Reset classes
             titleEl.classList.add(scenario === 'tokyoPlus' ? 'text-tokyo-plus' : 'text-greatest-hits');
 
             // Update summary and content
@@ -409,6 +409,7 @@
                     scales: {
                         x: {
                             beginAtZero: true,
+                            max: 10, // Standardized axis
                             grid: { display: false }
                         },
                         y: {
@@ -422,13 +423,21 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    let label = context.dataset.label || '';
+                                    const originalData = context.dataset.data[context.dataIndex];
+                                    let label = context.label || '';
                                     if (label) {
                                         label += ': ';
                                     }
-                                    if (context.parsed.x !== null) {
-                                        label += context.parsed.x;
-                                        if(context.label === 'Transit (Hours)') label += ' hrs';
+
+                                    if (Array.isArray(originalData)) {
+                                        // Handle range for Hotel Moves
+                                        if (originalData[0] > 0) {
+                                            label += `${originalData[0]}–${originalData[1]}`;
+                                        } else { // Handle single value for Transit
+                                            label += `${originalData[1]} hrs`;
+                                        }
+                                    } else {
+                                        label += originalData;
                                     }
                                     return label;
                                 }
