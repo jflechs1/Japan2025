@@ -14,28 +14,23 @@
     <!-- Visualization & Content Choices: 1) Scenario Metrics (Hotel Moves, Transit Time, Cost): Goal=Compare -> Viz=Bar Chart (Chart.js) -> Interaction=Updates on scenario selection -> Justification=Provides an immediate, quantitative comparison of logistical load. 2) Experience Fit: Goal=Compare -> Viz=Radar Chart (Chart.js) -> Interaction=Updates on scenario selection -> Justification=Visualizes multi-faceted qualitative data (how well a trip fits preferences) in a single, easy-to-digest graphic. 3) Sample Itineraries: Goal=Organize/Inform -> Viz=Structured HTML/CSS Timeline -> Interaction=Swaps content based on selection -> Justification=Makes the abstract pace and flow of each scenario concrete and easy to follow. 4) Hakone vs. Kawaguchiko: Goal=Compare -> Viz=Styled HTML Table -> Interaction=Static side-by-side view -> Justification=Best for direct, feature-by-feature comparison of two distinct options. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
+        :root {
+            --theme-primary: #A0522D; /* Default: Warm Earth Tone */
+        }
         body {
             font-family: 'Inter', sans-serif;
             background-color: #FDFBF5;
             color: #4A4A4A;
         }
+        .active-btn {
+            background-color: var(--theme-primary) !important;
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
         .inactive-btn {
             background-color: #E5E7EB;
             color: #374151;
-            transition: all 0.3s ease;
         }
-        .btn-tokyo-plus.active {
-            background-color: #2E8B57 !important; /* SeaGreen */
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        .btn-greatest-hits.active {
-            background-color: #4169E1 !important; /* RoyalBlue */
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
-        .text-tokyo-plus { color: #2E8B57; }
-        .text-greatest-hits { color: #4169E1; }
         .chart-container {
             position: relative;
             width: 100%;
@@ -58,7 +53,7 @@
             transition: all 0.3s ease-in-out;
         }
         .section-title {
-            color: #A0522D;
+            color: var(--theme-primary);
         }
         .timeline {
             position: relative;
@@ -82,7 +77,7 @@
             top: 0.25rem;
             height: 1rem;
             width: 1rem;
-            background-color: #A0522D;
+            background-color: var(--theme-primary);
             border-radius: 9999px;
             border: 2px solid #FDFBF5;
         }
@@ -103,10 +98,10 @@
                 <p class="text-gray-600">Select an option below to see how it impacts our trip.</p>
             </div>
             <div class="flex justify-center space-x-4">
-                <button id="btn-tokyo" class="btn-tokyo-plus px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
-                    Scenario A: Tokyo+ (with Onsen Overnight)
+                <button id="btn-tokyo" class="px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
+                    Scenario A: Tokyo+ (Onsen Overnight)
                 </button>
-                <button id="btn-greatest-hits" class="btn-greatest-hits px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
+                <button id="btn-greatest-hits" class="px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
                     Scenario B: "Greatest Hits" (Balanced)
                 </button>
             </div>
@@ -199,14 +194,18 @@
                 <h2 class="text-3xl font-bold section-title">How to Decide: Key Questions for the Group</h2>
                 <p class="text-gray-600 mt-2 max-w-3xl mx-auto">Let's discuss these points to find the plan that works best for everyone.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="card p-6">
                     <h4 class="font-bold text-lg mb-2">1. Pace vs. Icons</h4>
                     <p>Is seeing Kyoto a "must-have," even if it means a faster pace, more travel, and higher cost? Or do we prefer a more relaxed trip focused on one region?</p>
                 </div>
                 <div class="card p-6">
-                    <h4 class="font-bold text-lg mb-2">2. Onsen Experience</h4>
-                    <p>Do we want a dedicated overnight stay in a traditional ryokan (inn) to fully experience the onsen culture, or is a day trip sufficient?</p>
+                    <h4 class="font-bold text-lg mb-2">2. Budget & Logistics</h4>
+                    <p>Are we comfortable with the ~$180+ per person cost for bullet trains and managing 3 hotel changes in 6 nights? Or is simplicity and cost-saving more important?</p>
+                </div>
+                <div class="card p-6">
+                    <h4 class="font-bold text-lg mb-2">3. Arrival Day Energy</h4>
+                    <p>How do we want to spend our first day after arriving from China? A simple transfer to a Tokyo hotel, or a long travel leg immediately to another city?</p>
                 </div>
             </div>
         </section>
@@ -214,45 +213,34 @@
     </div>
 
     <script>
-        const scenarioColors = {
-            tokyoPlus: {
-                solid: '#2E8B57', // SeaGreen
-                light: 'rgba(46, 139, 87, 0.3)',
-                barAccent: '#8FBC8F' // DarkSeaGreen
-            },
-            greatestHits: {
-                solid: '#4169E1', // RoyalBlue
-                light: 'rgba(65, 105, 225, 0.3)',
-                barAccent: '#87CEEB' // SkyBlue
-            }
-        };
-
         const data = {
             tokyoPlus: {
                 title: 'Scenario A: Tokyo+ (with Onsen Overnight)',
-                summary: 'This scenario balances a relaxed pace with a "magical" onsen experience. It uses Tokyo as a main base but includes a dedicated overnight stay in Hakone or Kawaguchiko to fully enjoy the ryokan, food, and nature without being rushed.',
-                metricsRanges: {
-                    hotelMoves: '2-3',
-                    transitHours: '4-5'
+                summary: 'This scenario balances a relaxed pace with a "magical" onsen experience. It uses Tokyo as a main base but includes a dedicated overnight stay in Hakone to fully enjoy the ryokan, food, and nature without being rushed.',
+                metrics: {
+                    hotelMoves: 3,
+                    hotelMovesText: "1 - 3 hotels",
+                    transitHours: 5,
                 },
                 experienceScores: {
                     pace: 8,
                     flexibility: 8,
-                    nature: 8,
+                    nature: 9,
                     food: 8,
                     iconicSights: 6,
                     costControl: 8,
                 },
                 pros: [
-                    "Minimal logistical stress with only 2-3 hotel changes.",
-                    "Allows for a true, immersive onsen/ryokan experience without being rushed.",
-                    "High flexibility for most of the trip, with a focus on deep exploration.",
-                    "Good balance of city life, culture, and nature.",
+                    "Includes a dedicated, magical overnight ryokan experience.",
+                    "Far less logistical stress and travel time than a Kyoto loop.",
+                    "Maintains good flexibility for other days based out of Tokyo.",
+                    "Balances city energy with a relaxing mountain escape.",
+                    "Allows for deep exploration of both Tokyo and Hakone."
                 ],
                 cons: [
-                    "Still misses the classic Kyoto experience.",
-                    "Requires packing for one night away from the main Tokyo hotel.",
-                    "The Hakone vs. Kawaguchiko choice is important for logistics."
+                    "Logistically more complex than a single-hotel stay.",
+                    "Still misses the classic Kyoto experience for first-timers.",
+                    "Requires packing for one night away from the main hotel."
                 ],
                 itinerary: [
                     { day: "Oct 30", title: "Arrival & Settle In", details: "Arrive HND, transfer to Tokyo hotel for 2 nights.", icon: "🏨" },
@@ -266,30 +254,31 @@
             },
             greatestHits: {
                 title: 'Scenario B: "Greatest Hits" (Balanced)',
-                summary: "This scenario offers a balanced taste of Japan's highlights, based on the classic 3 nights Tokyo, 2 nights Kyoto, 1 night Hakone split. It's an efficient loop that captures iconic sights and experiences with a more manageable pace.",
-                metricsRanges: {
-                    hotelMoves: '3-4',
-                    transitHours: '7-8'
+                summary: 'This scenario offers a balanced taste of Japan\'s highlights, based on the classic 3 nights Tokyo, 2 nights Kyoto, 1 night Hakone split. It\'s an efficient loop that captures iconic sights and experiences with a more manageable pace.',
+                metrics: {
+                    hotelMoves: 4,
+                    hotelMovesText: "3 - 4 hotels, depending on Kyoto start",
+                    transitHours: 7,
                 },
                 experienceScores: {
                     pace: 6,
-                    flexibility: 3,
+                    flexibility: 4,
                     nature: 8,
                     food: 9,
                     iconicSights: 10,
                     costControl: 4,
                 },
                 pros: [
-                    "Ensures all first-timers see both Tokyo and Kyoto.",
-                    "Integrates a 'magical' overnight ryokan stay as a core part of the trip.",
-                    "High density of iconic experiences (Fushimi Inari, Gion, etc.).",
-                    "Provides a broader overview of Japan in a short time."
+                    "Covers the 'must-see' cities of Tokyo and Kyoto for first-timers.",
+                    "Integrates a memorable overnight ryokan/onsen stay in Hakone.",
+                    "More balanced pace than a hyper-condensed trip, with at least one full day in each location.",
+                    "Efficient travel loop (Tokyo → Kyoto → Hakone → Tokyo) minimizes backtracking."
                 ],
                 cons: [
-                    "High logistical load with 3-4 hotel changes in 6 nights.",
-                    "Significant time (~7-8 hours) and money (~$175+/person) lost to travel.",
-                    "Still a relatively fast pace with a tightly structured schedule.",
-                    "Very little flexibility; the schedule is locked in by train and hotel bookings."
+                    "Still logistically intensive with 3 hotel changes in 6 nights.",
+                    "Travel days still consume a significant portion of three separate days.",
+                    "Higher cost due to multiple Shinkansen (bullet train) trips.",
+                    "Less flexible; the core schedule is locked in by train and hotel bookings."
                 ],
                 itinerary: [
                     { day: "Oct 30", title: "Arrival & Tokyo Intro", details: "Arrive HND, transfer to Tokyo hotel. Explore local area like Shinjuku.", icon: "🏨" },
@@ -304,6 +293,20 @@
         };
 
         let metricsChart, experienceChart;
+        let currentScenarioData = {}; // Holds data for the active scenario for tooltip access
+
+        const colorPalettes = {
+            tokyoPlus: {
+                primary: '#2E8B57', // SeaGreen
+                barColors: ['#3CB371', '#2E8B57'],
+                radarBg: 'rgba(46, 139, 87, 0.2)'
+            },
+            greatestHits: {
+                primary: '#4682B4', // SteelBlue
+                barColors: ['#5F9EA0', '#4682B4'],
+                radarBg: 'rgba(70, 130, 180, 0.2)'
+            }
+        };
 
         const renderProsCons = (pros, cons) => {
             return `
@@ -341,53 +344,43 @@
 
         const updateUI = (scenario) => {
             const scenarioData = data[scenario];
-            const activeColor = scenarioColors[scenario];
+            currentScenarioData = scenarioData; // Update global state for chart tooltips
+            const colors = colorPalettes[scenario];
 
-            // Update title
-            const titleEl = document.getElementById('scenario-title');
-            titleEl.innerText = scenarioData.title;
-            titleEl.className = 'text-2xl font-bold mb-4 text-center'; // Reset classes
-            titleEl.classList.add(scenario === 'tokyoPlus' ? 'text-tokyo-plus' : 'text-greatest-hits');
-
-            // Update summary and content
+            // Update CSS variable for theme color
+            document.documentElement.style.setProperty('--theme-primary', colors.primary);
+            
+            document.getElementById('scenario-title').innerText = scenarioData.title;
             document.getElementById('scenario-summary').innerText = scenarioData.summary;
+
             document.getElementById('pros-cons-content').innerHTML = renderProsCons(scenarioData.pros, scenarioData.cons);
             document.getElementById('itinerary-content').innerHTML = renderItinerary(scenarioData.itinerary);
 
-            // Update metrics chart (data and colors)
-            const metricsDataset = metricsChart.data.datasets[0];
-            const hotelMovesRange = scenarioData.metricsRanges.hotelMoves.split('-').map(Number);
-            const transitHoursRange = scenarioData.metricsRanges.transitHours.split('-').map(Number);
-            metricsDataset.data = [hotelMovesRange, transitHoursRange];
-            metricsDataset.backgroundColor = [activeColor.solid, activeColor.barAccent];
-            metricsDataset.borderColor = [activeColor.solid, activeColor.barAccent];
-            metricsDataset.label = scenario; // Pass scenario key for tooltip
+            // Update Metrics Chart
+            metricsChart.data.datasets[0].data = [scenarioData.metrics.hotelMoves, scenarioData.metrics.transitHours];
+            metricsChart.data.datasets[0].backgroundColor = colors.barColors;
+            metricsChart.data.datasets[0].borderColor = colors.barColors.map(c => c.replace('0.2', '1'));
             metricsChart.update();
 
-            // Update experience chart (data and colors)
-            const expDataset = experienceChart.data.datasets[0];
-            expDataset.data = Object.values(scenarioData.experienceScores);
-            expDataset.label = scenarioData.title;
-            expDataset.backgroundColor = activeColor.light;
-            expDataset.borderColor = activeColor.solid;
-            expDataset.pointBackgroundColor = activeColor.solid;
-            expDataset.pointHoverBorderColor = activeColor.solid;
+            // Update Experience Chart
+            experienceChart.data.datasets[0].data = Object.values(scenarioData.experienceScores);
+            experienceChart.data.datasets[0].label = scenarioData.title;
+            experienceChart.data.datasets[0].backgroundColor = colors.radarBg;
+            experienceChart.data.datasets[0].borderColor = colors.primary;
+            experienceChart.data.datasets[0].pointBackgroundColor = colors.primary;
+            experienceChart.data.datasets[0].pointHoverBorderColor = colors.primary;
             experienceChart.update();
-            
-            // Update button styles
-            const tokyoBtn = document.getElementById('btn-tokyo');
-            const greatestHitsBtn = document.getElementById('btn-greatest-hits');
 
             if (scenario === 'tokyoPlus') {
-                tokyoBtn.classList.add('active');
-                tokyoBtn.classList.remove('inactive-btn');
-                greatestHitsBtn.classList.remove('active');
-                greatestHitsBtn.classList.add('inactive-btn');
+                document.getElementById('btn-tokyo').classList.add('active-btn');
+                document.getElementById('btn-tokyo').classList.remove('inactive-btn');
+                document.getElementById('btn-greatest-hits').classList.add('inactive-btn');
+                document.getElementById('btn-greatest-hits').classList.remove('active-btn');
             } else {
-                greatestHitsBtn.classList.add('active');
-                greatestHitsBtn.classList.remove('inactive-btn');
-                tokyoBtn.classList.remove('active');
-                tokyoBtn.classList.add('inactive-btn');
+                document.getElementById('btn-greatest-hits').classList.add('active-btn');
+                document.getElementById('btn-greatest-hits').classList.remove('inactive-btn');
+                document.getElementById('btn-tokyo').classList.add('inactive-btn');
+                document.getElementById('btn-tokyo').classList.remove('active-btn');
             }
         };
 
@@ -398,10 +391,10 @@
                 data: {
                     labels: ['Hotel Moves', 'Transit (Hours)'],
                     datasets: [{
-                        label: '', // Will be updated dynamically
+                        label: 'Metric Value',
                         data: [],
-                        backgroundColor: [],
-                        borderColor: [],
+                        backgroundColor: [], // Will be set by updateUI
+                        borderColor: [],     // Will be set by updateUI
                         borderWidth: 1
                     }]
                 },
@@ -412,7 +405,7 @@
                     scales: {
                         x: {
                             beginAtZero: true,
-                            max: 10, // Standardized axis
+                            max: 10, // Fix x-axis at 10
                             grid: { display: false }
                         },
                         y: {
@@ -426,22 +419,20 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    const scenarioKey = context.dataset.label;
-                                    if (!scenarioKey) return '';
-                                    
-                                    const labelKey = context.label;
-                                    const rawData = context.raw;
-                                    let text = `${labelKey}: `;
-
-                                    if (Array.isArray(rawData)) {
-                                        text += `${rawData[0]}–${rawData[1]}`;
-                                        if (labelKey === 'Transit (Hours)') {
-                                            text += ' hrs';
-                                        }
-                                    } else {
-                                        text += rawData;
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
                                     }
-                                    return text;
+                                    if (context.parsed.x !== null) {
+                                         if (context.label === 'Hotel Moves') {
+                                            label += `${context.parsed.x} (${currentScenarioData.metrics.hotelMovesText})`;
+                                        } else if (context.label === 'Transit (Hours)') {
+                                            label += `${context.parsed.x} hrs`;
+                                        } else {
+                                            label += context.parsed.x;
+                                        }
+                                    }
+                                    return label;
                                 }
                             }
                         }
