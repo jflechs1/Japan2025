@@ -104,10 +104,10 @@
             </div>
             <div class="flex justify-center space-x-4">
                 <button id="btn-tokyo" class="btn-tokyo-plus px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
-                    Scenario A: Modified "Tokyo+"
+                    Scenario A: Tokyo+ (with Onsen Overnight)
                 </button>
                 <button id="btn-greatest-hits" class="btn-greatest-hits px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
-                    Scenario B: "Greatest Hits" Loop
+                    Scenario B: "Greatest Hits" (Balanced)
                 </button>
             </div>
         </section>
@@ -199,18 +199,14 @@
                 <h2 class="text-3xl font-bold section-title">How to Decide: Key Questions for the Group</h2>
                 <p class="text-gray-600 mt-2 max-w-3xl mx-auto">Let's discuss these points to find the plan that works best for everyone.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="card p-6">
                     <h4 class="font-bold text-lg mb-2">1. Pace vs. Icons</h4>
                     <p>Is seeing Kyoto a "must-have," even if it means a faster pace, more travel, and higher cost? Or do we prefer a more relaxed trip focused on one region?</p>
                 </div>
                 <div class="card p-6">
-                    <h4 class="font-bold text-lg mb-2">2. Budget & Logistics</h4>
-                    <p>Are we comfortable with the ~$175+ per person cost for bullet trains and managing 3-4 hotel changes in 6 days? Or is simplicity and cost-saving more important?</p>
-                </div>
-                <div class="card p-6">
-                    <h4 class="font-bold text-lg mb-2">3. Arrival Day Energy</h4>
-                    <p>How do we want to spend our first day after arriving from China? A simple transfer to a Tokyo hotel, or a long travel leg immediately to another city?</p>
+                    <h4 class="font-bold text-lg mb-2">2. Onsen Experience</h4>
+                    <p>Do we want a dedicated overnight stay in a traditional ryokan (inn) to fully experience the onsen culture, or is a day trip sufficient?</p>
                 </div>
             </div>
         </section>
@@ -233,57 +229,50 @@
 
         const data = {
             tokyoPlus: {
-                title: 'Scenario A: Modified "Tokyo+"',
-                summary: 'This scenario prioritizes a relaxed pace, flexibility, and cost control by using Tokyo as a single home base. We explore the surrounding region through a series of optional day trips, minimizing travel time and hotel changes.',
-                metrics: {
-                    hotelMoves: 3, // Max value for bar length
-                    transitHours: 2
-                },
+                title: 'Scenario A: Tokyo+ (with Onsen Overnight)',
+                summary: 'This scenario balances a relaxed pace with a "magical" onsen experience. It uses Tokyo as a main base but includes a dedicated overnight stay in Hakone or Kawaguchiko to fully enjoy the ryokan, food, and nature without being rushed.',
                 metricsRanges: {
-                    hotelMoves: '1–3' // String for tooltip
+                    hotelMoves: '2-3',
+                    transitHours: '4-5'
                 },
                 experienceScores: {
-                    pace: 9,
-                    flexibility: 10,
-                    nature: 7,
+                    pace: 8,
+                    flexibility: 8,
+                    nature: 8,
                     food: 8,
-                    iconicSights: 5,
-                    costControl: 9,
+                    iconicSights: 6,
+                    costControl: 8,
                 },
                 pros: [
-                    "Minimal logistical stress with only one hotel.",
-                    "Maximum flexibility to change plans based on weather or mood.",
-                    "Lower overall cost (no expensive Shinkansen fares).",
-                    "Allows for deep, unhurried exploration of Tokyo's neighborhoods and food scene.",
-                    "Easy for group members to split up for different activities."
+                    "Minimal logistical stress with only 2-3 hotel changes.",
+                    "Allows for a true, immersive onsen/ryokan experience without being rushed.",
+                    "High flexibility for most of the trip, with a focus on deep exploration.",
+                    "Good balance of city life, culture, and nature.",
                 ],
                 cons: [
-                    "Completely misses the classic Kyoto experience (temples, Gion).",
-                    "Can feel like you're 'missing out' on a major part of Japan for first-timers.",
-                    "Day trips, while great, still involve 2-4 hours of travel on those days."
+                    "Still misses the classic Kyoto experience.",
+                    "Requires packing for one night away from the main Tokyo hotel.",
+                    "The Hakone vs. Kawaguchiko choice is important for logistics."
                 ],
                 itinerary: [
-                    { day: "Oct 30", title: "Arrival & Settle In", details: "Arrive HND, easy transfer to Tokyo hotel. Relaxed evening.", icon: "🏨" },
+                    { day: "Oct 30", title: "Arrival & Settle In", details: "Arrive HND, transfer to Tokyo hotel for 2 nights.", icon: "🏨" },
                     { day: "Oct 31", title: "West Tokyo Vibe", details: "Explore Shibuya & Harajuku. People-watching for Halloween.", icon: "🏙️" },
-                    { day: "Nov 1", title: "Mountain Day Trip", details: "Day trip to Hakone for onsen, foliage, and Fuji views.", icon: "🏞️" },
-                    { day: "Nov 2", title: "Coastal History Trip", details: "Day trip to Kamakura for temples and a light hike.", icon: "⛩️" },
+                    { day: "Nov 1", title: "Travel to Hakone", details: "Morning travel to Hakone (~1.5h). Check into ryokan, enjoy onsen and kaiseki dinner.", icon: "🏞️" },
+                    { day: "Nov 2", title: "Explore Hakone & Return", details: "Explore Hakone. Return to Tokyo in afternoon (~1.5h).", icon: "🚆" },
                     { day: "Nov 3", title: "Art & Culture", details: "Visit teamLab Planets and explore traditional Asakusa.", icon: "🎨" },
-                    { day: "Nov 4", title: "Free Day & Karaoke", details: "Flexible day for shopping or personal interests. Group karaoke night!", icon: "🎤" },
+                    { day: "Nov 4", title: "Free Day / Kamakura", details: "Flexible day for shopping, or an optional light day trip to Kamakura (~1.5h).", icon: "⛩️" },
                     { day: "Nov 5", title: "Departure", details: "Easy morning and departure from HND.", icon: "✈️" },
                 ]
             },
             greatestHits: {
-                title: 'Scenario B: "Greatest Hits" Loop',
-                summary: 'This scenario prioritizes seeing the most iconic sights for first-timers, including both Tokyo and Kyoto, plus an onsen town. It accepts a faster pace, higher cost, and more logistical complexity as a trade-off for experiential breadth.',
-                metrics: {
-                    hotelMoves: 4, // Max value for bar length
-                    transitHours: 9
-                },
+                title: 'Scenario B: "Greatest Hits" (Balanced)',
+                summary: "This scenario offers a balanced taste of Japan's highlights, based on the classic 3 nights Tokyo, 2 nights Kyoto, 1 night Hakone split. It's an efficient loop that captures iconic sights and experiences with a more manageable pace.",
                 metricsRanges: {
-                    hotelMoves: '3–4' // String for tooltip
+                    hotelMoves: '3-4',
+                    transitHours: '7-8'
                 },
                 experienceScores: {
-                    pace: 4,
+                    pace: 6,
                     flexibility: 3,
                     nature: 8,
                     food: 9,
@@ -297,19 +286,19 @@
                     "Provides a broader overview of Japan in a short time."
                 ],
                 cons: [
-                    "High logistical load with 4 hotel moves in 6 nights.",
-                    "Significant time (~9+ hours) and money (~$175+/person) lost to travel.",
-                    "High risk of group fatigue due to the fast, structured pace.",
+                    "High logistical load with 3-4 hotel changes in 6 nights.",
+                    "Significant time (~7-8 hours) and money (~$175+/person) lost to travel.",
+                    "Still a relatively fast pace with a tightly structured schedule.",
                     "Very little flexibility; the schedule is locked in by train and hotel bookings."
                 ],
                 itinerary: [
-                    { day: "Oct 30", title: "Arrival in Tokyo", details: "Arrive HND, transfer to Tokyo hotel for 1 night.", icon: "🏨" },
-                    { day: "Oct 31", title: "Travel to Hakone", details: "Morning in Tokyo, then travel to Hakone (~1.5h). Check into ryokan.", icon: "🚆" },
-                    { day: "Nov 1", title: "Travel to Kyoto", details: "Morning in Hakone, then travel to Kyoto (~3.5h). Evening in Gion.", icon: "🚆" },
-                    { day: "Nov 2", title: "Eastern Kyoto", details: "Explore Kiyomizu-dera and the historic Higashiyama district.", icon: "⛩️" },
-                    { day: "Nov 3", title: "Western Kyoto", details: "Visit Arashiyama Bamboo Grove and Kinkaku-ji (Golden Pavilion).", icon: "🎋" },
-                    { day: "Nov 4", title: "Hike & Return to Tokyo", details: "Morning Fushimi Inari hike, then travel back to Tokyo (~3.5h).", icon: "🚆" },
-                    { day: "Nov 5", title: "Departure", details: "Depart from HND.", icon: "✈️" },
+                    { day: "Oct 30", title: "Arrival & Tokyo Intro", details: "Arrive HND, transfer to Tokyo hotel. Explore local area like Shinjuku.", icon: "🏨" },
+                    { day: "Oct 31", title: "Full Day in Tokyo", details: "Explore Shibuya & Harajuku. People-watching for Halloween. teamLab in evening.", icon: "🏙️" },
+                    { day: "Nov 1", title: "Travel to Kyoto", details: "Morning Shinkansen to Kyoto (~3h). Check in, explore Gion in the evening.", icon: "🚆" },
+                    { day: "Nov 2", title: "Full Day in Kyoto", details: "Visit key sights like Fushimi Inari (hike) and Kiyomizu-dera.", icon: "⛩️" },
+                    { day: "Nov 3", title: "Travel to Hakone", details: "Morning in Kyoto (e.g., Arashiyama), then travel to Hakone (~2.5h). Check into ryokan for onsen.", icon: "🏞️" },
+                    { day: "Nov 4", title: "Hakone & Return to Tokyo", details: "Explore Hakone (e.g., Open Air Museum), then travel to Tokyo (~1.5h). Final dinner & karaoke.", icon: "🎤" },
+                    { day: "Nov 5", title: "Departure", details: "Easy morning and departure from HND.", icon: "✈️" },
                 ]
             }
         };
@@ -367,7 +356,9 @@
 
             // Update metrics chart (data and colors)
             const metricsDataset = metricsChart.data.datasets[0];
-            metricsDataset.data = [scenarioData.metrics.hotelMoves, scenarioData.metrics.transitHours];
+            const hotelMovesRange = scenarioData.metricsRanges.hotelMoves.split('-').map(Number);
+            const transitHoursRange = scenarioData.metricsRanges.transitHours.split('-').map(Number);
+            metricsDataset.data = [hotelMovesRange, transitHoursRange];
             metricsDataset.backgroundColor = [activeColor.solid, activeColor.barAccent];
             metricsDataset.borderColor = [activeColor.solid, activeColor.barAccent];
             metricsDataset.label = scenario; // Pass scenario key for tooltip
@@ -437,19 +428,18 @@
                                 label: function(context) {
                                     const scenarioKey = context.dataset.label;
                                     if (!scenarioKey) return '';
-
-                                    const scenarioData = data[scenarioKey];
+                                    
                                     const labelKey = context.label;
-                                    let value = context.parsed.x;
+                                    const rawData = context.raw;
                                     let text = `${labelKey}: `;
 
-                                    if (labelKey === 'Hotel Moves') {
-                                        const range = scenarioData.metricsRanges.hotelMoves;
-                                        text += `${range} (max ${value} shown)`;
-                                    } else if (labelKey === 'Transit (Hours)') {
-                                        text += `${value} hrs`;
+                                    if (Array.isArray(rawData)) {
+                                        text += `${rawData[0]}–${rawData[1]}`;
+                                        if (labelKey === 'Transit (Hours)') {
+                                            text += ' hrs';
+                                        }
                                     } else {
-                                        text += value;
+                                        text += rawData;
                                     }
                                     return text;
                                 }
