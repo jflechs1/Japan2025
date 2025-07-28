@@ -19,15 +19,23 @@
             background-color: #FDFBF5;
             color: #4A4A4A;
         }
-        .active-btn {
-            background-color: #A0522D !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-        }
         .inactive-btn {
             background-color: #E5E7EB;
             color: #374151;
+            transition: all 0.3s ease;
         }
+        .btn-tokyo-plus.active {
+            background-color: #A0522D !important; /* Sienna */
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .btn-greatest-hits.active {
+            background-color: #B72C2C !important; /* Red */
+            color: #FFFFFF !important;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .text-tokyo-plus { color: #A0522D; }
+        .text-greatest-hits { color: #B72C2C; }
         .chart-container {
             position: relative;
             width: 100%;
@@ -95,10 +103,10 @@
                 <p class="text-gray-600">Select an option below to see how it impacts our trip.</p>
             </div>
             <div class="flex justify-center space-x-4">
-                <button id="btn-tokyo" class="px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
+                <button id="btn-tokyo" class="btn-tokyo-plus px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
                     Scenario A: Modified "Tokyo+"
                 </button>
-                <button id="btn-greatest-hits" class="px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
+                <button id="btn-greatest-hits" class="btn-greatest-hits px-6 py-3 font-semibold rounded-lg transition-all duration-300 inactive-btn">
                     Scenario B: "Greatest Hits" Loop
                 </button>
             </div>
@@ -210,6 +218,17 @@
     </div>
 
     <script>
+        const scenarioColors = {
+            tokyoPlus: {
+                solid: '#A0522D', // Sienna
+                light: 'rgba(160, 82, 45, 0.2)'
+            },
+            greatestHits: {
+                solid: '#B72C2C', // Red
+                light: 'rgba(183, 44, 44, 0.2)'
+            }
+        };
+
         const data = {
             tokyoPlus: {
                 title: 'Scenario A: Modified "Tokyo+"',
@@ -217,7 +236,6 @@
                 metrics: {
                     hotelMoves: 1,
                     transitHours: 2,
-                    cost: 50,
                 },
                 experienceScores: {
                     pace: 9,
@@ -255,7 +273,6 @@
                 metrics: {
                     hotelMoves: 4,
                     transitHours: 9,
-                    cost: 200,
                 },
                 experienceScores: {
                     pace: 4,
@@ -327,30 +344,47 @@
 
         const updateUI = (scenario) => {
             const scenarioData = data[scenario];
-            
-            document.getElementById('scenario-title').innerText = scenarioData.title;
-            document.getElementById('scenario-summary').innerText = scenarioData.summary;
+            const activeColor = scenarioColors[scenario];
 
+            // Update title
+            const titleEl = document.getElementById('scenario-title');
+            titleEl.innerText = scenarioData.title;
+            titleEl.classList.remove('text-tokyo-plus', 'text-greatest-hits', 'section-title');
+            titleEl.classList.add(scenario === 'tokyoPlus' ? 'text-tokyo-plus' : 'text-greatest-hits');
+
+            // Update summary and content
+            document.getElementById('scenario-summary').innerText = scenarioData.summary;
             document.getElementById('pros-cons-content').innerHTML = renderProsCons(scenarioData.pros, scenarioData.cons);
             document.getElementById('itinerary-content').innerHTML = renderItinerary(scenarioData.itinerary);
 
-            metricsChart.data.datasets[0].data = [scenarioData.metrics.hotelMoves, scenarioData.metrics.transitHours, scenarioData.metrics.cost];
+            // Update metrics chart (data only)
+            metricsChart.data.datasets[0].data = [scenarioData.metrics.hotelMoves, scenarioData.metrics.transitHours];
             metricsChart.update();
 
-            experienceChart.data.datasets[0].data = Object.values(scenarioData.experienceScores);
-            experienceChart.data.datasets[0].label = scenarioData.title;
+            // Update experience chart (data and colors)
+            const expDataset = experienceChart.data.datasets[0];
+            expDataset.data = Object.values(scenarioData.experienceScores);
+            expDataset.label = scenarioData.title;
+            expDataset.backgroundColor = activeColor.light;
+            expDataset.borderColor = activeColor.solid;
+            expDataset.pointBackgroundColor = activeColor.solid;
+            expDataset.pointHoverBorderColor = activeColor.solid;
             experienceChart.update();
+            
+            // Update button styles
+            const tokyoBtn = document.getElementById('btn-tokyo');
+            const greatestHitsBtn = document.getElementById('btn-greatest-hits');
 
             if (scenario === 'tokyoPlus') {
-                document.getElementById('btn-tokyo').classList.add('active-btn');
-                document.getElementById('btn-tokyo').classList.remove('inactive-btn');
-                document.getElementById('btn-greatest-hits').classList.add('inactive-btn');
-                document.getElementById('btn-greatest-hits').classList.remove('active-btn');
+                tokyoBtn.classList.add('active');
+                tokyoBtn.classList.remove('inactive-btn');
+                greatestHitsBtn.classList.remove('active');
+                greatestHitsBtn.classList.add('inactive-btn');
             } else {
-                document.getElementById('btn-greatest-hits').classList.add('active-btn');
-                document.getElementById('btn-greatest-hits').classList.remove('inactive-btn');
-                document.getElementById('btn-tokyo').classList.add('inactive-btn');
-                document.getElementById('btn-tokyo').classList.remove('active-btn');
+                greatestHitsBtn.classList.add('active');
+                greatestHitsBtn.classList.remove('inactive-btn');
+                tokyoBtn.classList.remove('active');
+                tokyoBtn.classList.add('inactive-btn');
             }
         };
 
@@ -359,12 +393,12 @@
             metricsChart = new Chart(metricsCtx, {
                 type: 'bar',
                 data: {
-                    labels: ['Hotel Moves', 'Transit (Hours)', 'Cost ($/person, est.)'],
+                    labels: ['Hotel Moves', 'Transit (Hours)'],
                     datasets: [{
                         label: 'Metric Value',
                         data: [],
-                        backgroundColor: ['#D2B48C', '#A0522D', '#8B4513'],
-                        borderColor: ['#A0522D', '#8B4513', '#556B2F'],
+                        backgroundColor: ['#D2B48C', '#A0522D'],
+                        borderColor: ['#A0522D', '#8B4513'],
                         borderWidth: 1
                     }]
                 },
@@ -395,7 +429,6 @@
                                     if (context.parsed.x !== null) {
                                         label += context.parsed.x;
                                         if(context.label === 'Transit (Hours)') label += ' hrs';
-                                        if(context.label === 'Cost ($/person, est.)') label = `~$${context.parsed.x}`;
                                     }
                                     return label;
                                 }
